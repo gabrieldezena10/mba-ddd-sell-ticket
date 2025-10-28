@@ -1,11 +1,12 @@
 import { randomUUID } from 'crypto';
 import { AggregateRoot } from 'src/core/shared/domain/aggregate-root';
+import { Name } from 'src/core/shared/domain/value-objects/name.value-object';
 import { CustomerConstructorInput } from './types';
 
 export class Customer extends AggregateRoot {
   id: string;
   cpf: string;
-  name: string;
+  name: Name;
 
   constructor(inputDto: CustomerConstructorInput) {
     super();
@@ -14,7 +15,7 @@ export class Customer extends AggregateRoot {
     this.name = inputDto.name;
   }
 
-  static create(command: { cpf: string; name: string }) {
+  static create(command: { cpf: string; name: Name }) {
     return new Customer(command);
   }
 
