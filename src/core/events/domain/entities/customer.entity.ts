@@ -1,17 +1,22 @@
-import { randomUUID } from 'crypto';
 import { AggregateRoot } from 'src/core/shared/domain/aggregate-root';
 import { Cpf } from 'src/core/shared/domain/value-objects/cpf.value-object';
 import { Name } from 'src/core/shared/domain/value-objects/name.value-object';
+import { Uuid } from 'src/core/shared/domain/value-objects/uuid.value-object';
 import { CustomerConstructorInput } from './types';
 
+export class CustumerId extends Uuid {}
+
 export class Customer extends AggregateRoot {
-  id: string;
+  id: CustumerId;
   cpf: Cpf;
   name: Name;
 
   constructor(inputDto: CustomerConstructorInput) {
     super();
-    this.id = inputDto.id ?? randomUUID();
+    this.id =
+      typeof inputDto.id === 'string'
+        ? new CustumerId(inputDto.id)
+        : (inputDto.id ?? new CustumerId());
     this.cpf = inputDto.cpf;
     this.name = inputDto.name;
   }
