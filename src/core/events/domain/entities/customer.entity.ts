@@ -6,7 +6,7 @@ import { CustomerConstructorInput } from './types';
 
 export class CustumerId extends Uuid {}
 
-export class Customer extends AggregateRoot {
+export class Customer extends AggregateRoot<CustumerId> {
   id: CustumerId;
   cpf: Cpf;
   name: Name;
@@ -30,9 +30,16 @@ export class Customer extends AggregateRoot {
 
   public toJSON() {
     return {
-      id: this.id,
+      id: this.id.toString(),
       cpf: this.cpf,
       name: this.name,
     };
+  }
+
+  equals(obj: this): boolean {
+    if (obj === null || obj === undefined) return false;
+    if (obj.id === undefined) return false;
+    if (obj.constructor.name !== this.constructor.name) return false;
+    return this.id.equals(obj.id);
   }
 }
