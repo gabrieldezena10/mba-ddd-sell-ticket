@@ -17,11 +17,9 @@ export class Uuid extends ValueObject<string> {
   }
 }
 
-export class InvalidUuidError extends Error {
+class InvalidUuidError extends Error {
   constructor(invalidValue: string) {
     super(`Value ${invalidValue} must be a valid UUID`);
     this.name = 'InvalidUuidError';
   }
 }
-
-export default Uuid;
