@@ -1,5 +1,6 @@
 import { Entity } from 'src/core/shared/domain/entity';
 import { Uuid } from 'src/core/shared/domain/value-objects/uuid.value-object';
+import { EventSpot } from './event-spot';
 
 export class EventSectionId extends Uuid {}
 
@@ -18,6 +19,7 @@ export type EventSectionConstructorProps = {
   total_spots: number;
   total_spots_reserved: number;
   price: number;
+  spots?: Set<EventSpot>;
 };
 
 export class EventSection extends Entity<EventSectionId> {
@@ -28,6 +30,7 @@ export class EventSection extends Entity<EventSectionId> {
   total_spots: number;
   total_spots_reserved: number;
   price: number;
+  spots: Set<EventSpot>;
 
   constructor(props: EventSectionConstructorProps) {
     super();
@@ -41,6 +44,7 @@ export class EventSection extends Entity<EventSectionId> {
     this.total_spots = props.total_spots;
     this.total_spots_reserved = props.total_spots_reserved;
     this.price = props.price;
+    this.spots = props.spots ?? new Set<EventSpot>();
   }
 
   static create(command: EventSectionCreateCommand) {
@@ -70,6 +74,7 @@ export class EventSection extends Entity<EventSectionId> {
       total_spots: this.total_spots,
       total_spots_reserved: this.total_spots_reserved,
       price: this.price,
+      spots: [...this.spots].map((spot) => spot.toJSON()),
     };
   }
 }
