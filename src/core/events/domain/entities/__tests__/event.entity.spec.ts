@@ -1,5 +1,3 @@
-import { EventSection } from '../event-section';
-import { EventSpot } from '../event-spot';
 import { Event, EventId } from '../event.entity';
 import { PartnerId } from '../partner.entity';
 
@@ -20,23 +18,17 @@ describe('Event Entity Unit Tests', () => {
     expect(event.date).toBeInstanceOf(Date);
     expect(event.partner_id).toBeInstanceOf(PartnerId);
 
-    const section = EventSection.create({
+    event.addSection({
       name: 'Seção 1',
       price: 10,
       total_spots: 100,
       description: 'Descrição da seção 1',
     });
 
-    event.sections.add(section);
-
     expect(event.sections.size).toBe(1);
-    expect(event.sections.has(section)).toBe(true);
+    expect(event.total_spots).toBe(100);
 
-    const spot = EventSpot.create();
-
-    section.spots.add(spot);
-
-    expect(section.spots.size).toBe(1);
-    expect(section.spots.has(spot)).toBe(true);
+    const [section] = event.sections;
+    expect(section.spots.size).toBe(100);
   });
 });
