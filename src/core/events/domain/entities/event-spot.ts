@@ -1,15 +1,8 @@
 import { Entity } from 'src/core/shared/domain/entity';
 import { Uuid } from 'src/core/shared/domain/value-objects/uuid.value-object';
+import { EventSpotConstructorProps } from './types';
 
 export class EventSpotId extends Uuid {}
-
-export type EventSpotConstructorProps = {
-  id?: EventSpotId | string;
-  location: string | null;
-  is_reserved: boolean;
-  is_published: boolean;
-};
-
 export class EventSpot extends Entity<EventSpotId> {
   id: EventSpotId;
   location: string | null;
@@ -33,6 +26,14 @@ export class EventSpot extends Entity<EventSpotId> {
       is_published: false,
       is_reserved: false,
     });
+  }
+
+  publish() {
+    this.is_published = true;
+  }
+
+  unpublish() {
+    this.is_published = false;
   }
 
   equals(obj: this): boolean {

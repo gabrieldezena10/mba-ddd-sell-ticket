@@ -2,7 +2,7 @@ import { Cpf } from 'src/core/shared/domain/value-objects/cpf.value-object';
 import { Name } from 'src/core/shared/domain/value-objects/name.value-object';
 import { CustumerId } from './customer.entity';
 import { EventSection, EventSectionId } from './event-section';
-import { EventSpot } from './event-spot';
+import { EventSpot, EventSpotId } from './event-spot';
 import { EventId } from './event.entity';
 import { PartnerId } from './partner.entity';
 
@@ -57,4 +57,12 @@ export type EventSectionConstructorProps = {
   total_spots_reserved: number;
   price: number;
   spots?: Set<EventSpot>;
+};
+
+// EventSpot
+export type EventSpotConstructorProps = {
+  id?: EventSpotId | string;
+  location: string | null;
+  is_reserved: boolean;
+  is_published: boolean;
 };
