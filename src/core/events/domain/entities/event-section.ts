@@ -1,26 +1,12 @@
 import { Entity } from 'src/core/shared/domain/entity';
 import { Uuid } from 'src/core/shared/domain/value-objects/uuid.value-object';
 import { EventSpot } from './event-spot';
+import {
+  EventSectionConstructorProps,
+  EventSectionCreateCommand,
+} from './types';
 
 export class EventSectionId extends Uuid {}
-
-export type EventSectionCreateCommand = {
-  name: string;
-  description?: string | null;
-  total_spots: number;
-  price: number;
-};
-
-export type EventSectionConstructorProps = {
-  id?: EventSectionId | string;
-  name: string;
-  description: string | null;
-  is_published: boolean;
-  total_spots: number;
-  total_spots_reserved: number;
-  price: number;
-  spots?: Set<EventSpot>;
-};
 
 export class EventSection extends Entity<EventSectionId> {
   id: EventSectionId;
@@ -55,7 +41,15 @@ export class EventSection extends Entity<EventSectionId> {
       total_spots_reserved: 0,
     });
 
+    section.initSpots();
+
     return section;
+  }
+
+  private initSpots() {
+    for (let i = 0; i < this.total_spots; i++) {
+      this.spots.add(EventSpot.create());
+    }
   }
 
   equals(obj: this): boolean {

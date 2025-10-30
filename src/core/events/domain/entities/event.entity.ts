@@ -2,34 +2,13 @@ import { AggregateRoot } from 'src/core/shared/domain/aggregate-root';
 import { Uuid } from 'src/core/shared/domain/value-objects/uuid.value-object';
 import { EventSection } from './event-section';
 import { PartnerId } from './partner.entity';
+import {
+  AddSectionCommand,
+  CreateEventCommand,
+  EventConstructorProps,
+} from './types';
 
 export class EventId extends Uuid {}
-
-export type CreateEventCommand = {
-  name: string;
-  description?: string | null;
-  date: Date;
-  partner_id: PartnerId;
-};
-
-export type AddSectionCommand = {
-  name: string;
-  description?: string | null;
-  total_spots: number;
-  price: number;
-};
-
-export type EventConstructorProps = {
-  id?: EventId | string;
-  name: string;
-  description: string | null;
-  date: Date;
-  is_published: boolean;
-  total_spots: number;
-  total_spots_reserved: number;
-  partner_id: PartnerId | string;
-  sections?: Set<EventSection>;
-};
 
 export class Event extends AggregateRoot<EventId> {
   id: EventId;
@@ -72,6 +51,12 @@ export class Event extends AggregateRoot<EventId> {
     });
 
     return event;
+  }
+
+  addSection(command: AddSectionCommand) {
+    const section = EventSection.create(command);
+    this.sections.add(section);
+    this.total_spots += section.total_spots;
   }
 
   equals(obj: this): boolean {
