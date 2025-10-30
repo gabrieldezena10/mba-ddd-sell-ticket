@@ -1,5 +1,6 @@
 import { AggregateRoot } from 'src/core/shared/domain/aggregate-root';
 import { Uuid } from 'src/core/shared/domain/value-objects/uuid.value-object';
+import { Event } from './event.entity';
 
 export class PartnerId extends Uuid {}
 
@@ -32,6 +33,14 @@ export class Partner extends AggregateRoot<PartnerId> {
       name: command.name,
     });
     return partner;
+  }
+
+  initEvent(command: InitEventCommand) {
+    const event = Event.create({
+      ...command,
+      partner_id: this.id,
+    });
+    return event;
   }
 
   equals(obj: this): boolean {
