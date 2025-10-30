@@ -53,6 +53,31 @@ export class Event extends AggregateRoot<EventId> {
     return event;
   }
 
+  changeName(name: string) {
+    this.name = name;
+  }
+
+  changeDescription(description: string) {
+    this.description = description;
+  }
+
+  changeDate(date: Date) {
+    this.date = date;
+  }
+
+  publishAll() {
+    this.publish();
+    this.sections.forEach((section) => section.publishAll());
+  }
+
+  publish() {
+    this.is_published = true;
+  }
+
+  unpublish() {
+    this.is_published = false;
+  }
+
   addSection(command: AddSectionCommand) {
     const section = EventSection.create(command);
     this.sections.add(section);
